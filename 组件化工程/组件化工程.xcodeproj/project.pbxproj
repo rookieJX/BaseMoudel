@@ -16,6 +16,7 @@
 		2606685822320A790067004C /* _____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606685722320A790067004C /* _____Tests.m */; };
 		2606686F223213580067004C /* JXNullHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606686E223213580067004C /* JXNullHelper.m */; };
 		2606687B2232388E0067004C /* JXDeviceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606687A2232388E0067004C /* JXDeviceHelper.m */; };
+		4981336D2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		260668792232388E0067004C /* JXDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXDeviceHelper.h; sourceTree = "<group>"; };
 		2606687A2232388E0067004C /* JXDeviceHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXDeviceHelper.m; sourceTree = "<group>"; };
 		2606687C2232425F0067004C /* JXDeviceMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXDeviceMacros.h; sourceTree = "<group>"; };
+		4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+JX_Category_Notification.h"; sourceTree = "<group>"; };
+		4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+JX_Category_Notification.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,7 @@
 		2606686222320A830067004C /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				4981336A2234BFBE00A80B0B /* Category */,
 				2606686C223213390067004C /* Helper */,
 				2606686B223213290067004C /* Macros */,
 			);
@@ -187,6 +191,15 @@
 			children = (
 			);
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		4981336A2234BFBE00A80B0B /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */,
+				4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2606684322320A750067004C /* ViewController.m in Sources */,
+				4981336D2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m in Sources */,
 				2606684E22320A790067004C /* main.m in Sources */,
 				2606686F223213580067004C /* JXNullHelper.m in Sources */,
 				2606684022320A750067004C /* AppDelegate.m in Sources */,

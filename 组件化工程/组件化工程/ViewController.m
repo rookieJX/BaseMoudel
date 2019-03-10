@@ -16,6 +16,8 @@
 
 #import <Photos/Photos.h>
 
+#define KbuttonHeight 50
+
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationBarDelegate>
 @property (nonatomic,strong) UIImagePickerController *imagePickerController;
 @property (nonatomic,strong) UIImageView *imageView;
@@ -28,49 +30,64 @@
 
     self.view.backgroundColor   = JX_Color_Rand;
     
-    [JX_Device JX_Device_Permission_Check_AudioAuth:^(BOOL permission) {
-        NSLog(@"弹出麦克风权限权限：%d",permission);
-        if (!permission) {
-            JX_Device_Macros_Open_Setting;
-        }
-    }];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor  = JX_Color_Rand;
-    [button setTitle:@"相机" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(actionForChoosePhotoFromAlbum) forControlEvents:UIControlEventTouchUpInside];
-    button.frame    = CGRectMake(0, 0, JX_Layout_Screen_Width, JX_Layout_Navigation_Height);
-    [self.view addSubview:button];
     
-    self.imageView = [[UIImageView alloc] init];
-    self.imageView.frame    = CGRectMake(30, JX_Layout_Navigation_Height, JX_Layout_Screen_Width-60, 200);
-    [self.view addSubview:self.imageView];
+    [self createButtonTitle:@"请求麦克风权限" action:@selector(actionForAudioAuth) originY:KbuttonHeight];
+    [self createButtonTitle:@"请求相机权限" action:@selector(actionForCameraAuth) originY:KbuttonHeight*2];
+    [self createButtonTitle:@"请求相册权限" action:@selector(actionForPhotoAlbumAuth) originY:KbuttonHeight*3];
+    [self createButtonTitle:@"请求远程通知权限" action:@selector(actionForRmoteNotificationAuth) originY:KbuttonHeight*4];
+    NSLog(@"判断推送权限：%d",JX_Device_Permission_Macros_NotificationAuth);
     
 }
 
+- (UIButton *)createButtonTitle:(NSString *)title action:(SEL)action originY:(CGFloat)originY {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor  = JX_Color_Rand;
+    [button setTitle:title forState:UIControlStateNormal];
+    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+    button.frame    = CGRectMake(0, originY, JX_Layout_Screen_Width, KbuttonHeight);
+    [self.view addSubview:button];
+    return button;
+}
+#pragma mark - 麦克风
+- (void)actionForAudioAuth {
+    [JX_Device JX_Device_Permission_Check_AudioAuth:^(BOOL permission) {
+        NSLog(@"弹出麦克风权限权限：%d",permission);
+    }];
+}
 #pragma mark - 相机
-- (void)actionForChoosePhotoFromAlbum {
-//    if (JX_Device_Permission_Macros_PhotoLibraryAuth) {
-//        [JX_Device JX_Device_Permission_Check_PhotoLibraryAuth:^(BOOL permission) {
-//            if (permission) {
-//                self.imagePickerController.sourceType   = UIImagePickerControllerSourceTypePhotoLibrary;
-//                [self presentViewController:self.imagePickerController animated:YES completion:nil];
-//            }
-//        }];
-//    }
-    
+- (void)actionForCameraAuth {
     if (JX_Device_Permission_Macros_CameraAuth) {
         [JX_Device JX_Device_Permission_Check_CameraAuth:^(BOOL permission) {
             if (permission) {
                 self.imagePickerController.sourceType   = UIImagePickerControllerSourceTypeCamera;
                 [self presentViewController:self.imagePickerController animated:YES completion:nil];
             } else {
-                NSLog(@"被拒绝");
+                NSLog(@"相机权限被拒绝");
             }
         }];
-        
-
     }
+}
+
+#pragma mark - 相册
+- (void)actionForPhotoAlbumAuth {
+    if (JX_Device_Permission_Macros_PhotoLibraryAuth) {
+        [JX_Device JX_Device_Permission_Check_PhotoLibraryAuth:^(BOOL permission) {
+            if (permission) {
+                self.imagePickerController.sourceType   = UIImagePickerControllerSourceTypePhotoLibrary;
+                [self presentViewController:self.imagePickerController animated:YES completion:nil];
+            } else {
+                NSLog(@"相册权限被拒绝");
+            }
+        }];
+    }
+}
+
+#pragma mark - 远程通知
+- (void)actionForRmoteNotificationAuth {
+    [JX_Device JX_Device_Permission_Check_NotificationAuth:^(BOOL permission) {
+        NSLog(@"权限判断提醒：%d",permission);
+    }];
 }
 
 
@@ -78,7 +95,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *)info {
     NSLog(@"选中结果");
     UIImage *image = info[UIImagePickerControllerOriginalImage];
-    self.imageView.image    = image;
+    NSLog(@"%@",image);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

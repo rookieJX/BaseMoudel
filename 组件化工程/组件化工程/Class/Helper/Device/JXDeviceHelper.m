@@ -212,16 +212,16 @@ singleton_implementation(JXDeviceHelper);
  @return YES:有权限，NO:没权限
  */
 - (BOOL)JX_Device_Permission_NotificationAuth {
+    
     if (JX_System_Version >= 8.0f) {
         UIUserNotificationSettings *setting = [[UIApplication sharedApplication] currentUserNotificationSettings];
         if (UIUserNotificationTypeNone == setting.types) {
-            return NO;
+            return  NO;
         }
-        
     } else {
         UIRemoteNotificationType type = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
         if(UIRemoteNotificationTypeNone == type){
-            return NO;
+            return  NO;
         }
     }
     return YES;
@@ -364,6 +364,28 @@ singleton_implementation(JXDeviceHelper);
             
         }
     }];
+}
+
+/**
+ 判断通知权限开关,会弹出是否允许弹出权限(远程)
+ */
+- (void)JX_Device_Permission_Check_NotificationAuth:(CheckPermissionNotificationAuth)permission {
+    if (JX_System_Version >= 10.0) {
+        [[UNUserNotificationCenter   currentNotificationCenter] requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                permission(granted);
+            });
+        }];
+    } else if (JX_System_Version >= 8.0) {
+        UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
+        BOOL auth = [self JX_Device_Permission_NotificationAuth];
+        permission(auth);
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
+        BOOL auth = [self JX_Device_Permission_NotificationAuth];
+        permission(auth);
+    }
 }
 /**
  定位权限开关

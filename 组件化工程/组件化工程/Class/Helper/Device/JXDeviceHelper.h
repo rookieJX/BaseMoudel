@@ -17,33 +17,37 @@
  */
 typedef void(^CheckPermissionAudioAuth)         (BOOL permission);
 /**
- 判断相机权限开关,但是不会弹出是否允许弹出权限
+ 判断相机权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Camera Usage Description 允许**访问您的相机,来用于**功能
  */
 typedef void(^CheckPermissionCameraAuth)        (BOOL permission);
 /**
- 判断相册权限开关,但是不会弹出是否允许弹出权限
+ 判断相册权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Photo Library Additions Usage Description 允许**访问您的相册,来用于**功能
  */
 typedef void(^CheckPermissionPhotoLibraryAuth)  (BOOL permission);
 /**
- 定位权限开关
+ 判断通知权限开关,会弹出是否允许弹出权限
+ */
+typedef void(^CheckPermissionNotificationAuth)  (BOOL permission);
+/**
+ 定位权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Location When In Use Usage Description 允许**在应用使用期间访问您的位置,来用于**功能
  (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**访问您的位置,来用于**功能
  */
 typedef void(^CheckPermissionLocationAuth)      (BOOL permission);
 /**
- 通讯录权限开关
+ 通讯录权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Contacts Usage Description 允许**访问您的通讯录,来用于**功能
  */
 typedef void(^CheckPermissionAddressBookAuth)   (BOOL permission);
 /**
- 日历权限开关
+ 日历权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Calendars Usage Description 允许**访问您的日历,来用于**功能
  */
 typedef void(^CheckPermissionCalendarAuth)      (BOOL permission);
 /**
- 备忘录权限开关
+ 备忘录权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Reminders Usage Description 允许**访问您的备忘录,来用于**功能
  */
 typedef void(^CheckPermissionReminderAuth)      (BOOL permission);
@@ -193,6 +197,11 @@ singleton_interface(JXDeviceHelper);
  (需要在info中配置)Privacy - Photo Library Additions Usage Description 允许**访问您的相册,来用于**功能
  */
 - (void)JX_Device_Permission_Check_PhotoLibraryAuth:(CheckPermissionPhotoLibraryAuth)permission;
+
+/**
+ 判断通知权限开关,会弹出是否允许弹出权限(远程)
+ */
+- (void)JX_Device_Permission_Check_NotificationAuth:(CheckPermissionNotificationAuth)permission;
 
 /**
  定位权限开关
