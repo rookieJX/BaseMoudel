@@ -15,13 +15,26 @@
 
 @interface AppDelegate (JX_Category_Notification)<UNUserNotificationCenterDelegate>
 
-- (void)JX_Category_Notification_Regist;
+#pragma mark - 远程推送注册
+
+/**
+ 远程推送注册
+ */
+- (void)JX_Category_Notification_Regist_Rmote;
 
 // iOS 10收到通知
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler;
 
 // 通知的点击事件
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler;
+
+
+#pragma mark - 本地推送
+
+/**
+ 本地推送
+ */
+- (void)JX_Category_Notification_Regist_Local;
 
 @end
 

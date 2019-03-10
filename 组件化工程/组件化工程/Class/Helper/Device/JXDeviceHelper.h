@@ -199,7 +199,7 @@ singleton_interface(JXDeviceHelper);
 - (void)JX_Device_Permission_Check_PhotoLibraryAuth:(CheckPermissionPhotoLibraryAuth)permission;
 
 /**
- 判断通知权限开关,会弹出是否允许弹出权限(远程)
+ 判断通知权限开关,会弹出是否允许弹出权限(远程、本地通用)
  */
 - (void)JX_Device_Permission_Check_NotificationAuth:(CheckPermissionNotificationAuth)permission;
 

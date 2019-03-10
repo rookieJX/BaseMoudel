@@ -8,11 +8,17 @@
 
 #import "AppDelegate+JX_Category_Notification.h"
 #import "JXDeviceMacros.h"
-
+#import "JXMacrosHeader.h"
 @implementation AppDelegate (JX_Category_Notification)
 
-- (void)JX_Category_Notification_Regist {
+#pragma mark - 远程推送
+
+/**
+ 远程推送注册
+ */
+- (void)JX_Category_Notification_Regist_Rmote {
     [JX_Device JX_Device_Permission_Check_NotificationAuth:^(BOOL permission) {}];
+    [UNUserNotificationCenter   currentNotificationCenter].delegate = self;
     // 注册获得device Token
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
@@ -29,6 +35,7 @@
 
 // iOS 10收到通知
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+    // 可以更改远程推送内容
     NSDictionary * userInfo = notification.request.content.userInfo;
     UNNotificationRequest *request = notification.request; // 收到推送的请求
     UNNotificationContent *content = request.content; // 收到推送的消息内容
@@ -77,4 +84,89 @@
     NSLog(@"iOS7及以上系统，收到通知");
     completionHandler(UIBackgroundFetchResultNewData);
 }
+
+#pragma mark - 本地推送
+
+/**
+ 本地推送
+ */
+- (void)JX_Category_Notification_Regist_Local {
+
+    [JX_Device JX_Device_Permission_Check_NotificationAuth:^(BOOL permission) {
+        if (permission) {
+            [UNUserNotificationCenter   currentNotificationCenter].delegate = self;
+            [JX_Device JX_Device_Permission_Check_NotificationAuth:^(BOOL permission) {
+                
+                if (JX_System_Version >= 10.0) {
+                    
+                    // 1、创建通知内容，注：这里得用可变类型的UNMutableNotificationContent，否则内容的属性是只读的
+                    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                    // 标题
+                    content.title = @"**";
+                    // 次标题
+                    content.subtitle = @"****";
+                    // 内容
+                    content.body = @"*****";
+                    
+                    // app显示通知数量的角标
+                    content.badge = @(1);
+                    
+                    // 通知的提示声音，这里用的默认的声音
+                    content.sound = [UNNotificationSound defaultSound];
+                    
+                    NSString *path = [[NSBundle mainBundle] pathForResource:@"local" ofType:@"jpg"];
+                    UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"imageIndetifier" URL:[NSURL fileURLWithPath:path] options:nil error:nil];
+                    
+                    // 附件 可以是音频、图片、视频 这里是一张图片
+                    content.attachments = @[attachment];
+                    
+                    // 标识符
+                    content.categoryIdentifier = @"categoryIndentifier";
+                    
+                    // 2、创建通知触发
+                    /* 触发器分三种：
+                     UNTimeIntervalNotificationTrigger : 在一定时间后触发，如果设置重复的话，timeInterval不能小于60
+                     UNCalendarNotificationTrigger : 在某天某时触发，可重复
+                     UNLocationNotificationTrigger : 进入或离开某个地理区域时触发
+                     */
+                    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
+                    
+                    // 3、创建通知请求
+                    UNNotificationRequest *notificationRequest = [UNNotificationRequest requestWithIdentifier:@"KFGroupNotification" content:content trigger:trigger];
+                    
+                    // 4、将请求加入通知中心
+                    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:notificationRequest withCompletionHandler:^(NSError * _Nullable error) {
+                        if (error == nil) {
+                            NSLog(@"已成功加推送%@",notificationRequest.identifier);
+                        }
+                    }];
+                } else if (JX_System_Version >= 8.0) {
+                    UILocalNotification *notification = [[UILocalNotification alloc] init];
+                    // 设置触发通知的时间
+                    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:10];
+                    notification.fireDate = fireDate;
+                    // 时区
+                    notification.timeZone = [NSTimeZone defaultTimeZone];
+                    // 通知重复提示的单位，可以是天、周、月
+                    notification.repeatInterval = NSCalendarUnitDay;
+                    
+                    // 通知内容
+                    notification.alertBody =  @"****";
+                    notification.applicationIconBadgeNumber = 1;
+                    // 通知被触发时播放的声音
+                    notification.soundName = UILocalNotificationDefaultSoundName;
+                    // 通知参数
+                    NSDictionary *userDict = [NSDictionary dictionaryWithObject:@"*****" forKey:@"key"];
+                    notification.userInfo = userDict;
+                    
+                    // 执行通知注册
+                    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+                }
+            }];
+
+        }
+    }];
+}
+
+
 @end

@@ -17,6 +17,7 @@
 		2606686F223213580067004C /* JXNullHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606686E223213580067004C /* JXNullHelper.m */; };
 		2606687B2232388E0067004C /* JXDeviceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606687A2232388E0067004C /* JXDeviceHelper.m */; };
 		4981336D2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */; };
+		4981336F2234FE9200A80B0B /* local.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4981336E2234FE9200A80B0B /* local.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		2606687C2232425F0067004C /* JXDeviceMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXDeviceMacros.h; sourceTree = "<group>"; };
 		4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+JX_Category_Notification.h"; sourceTree = "<group>"; };
 		4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+JX_Category_Notification.m"; sourceTree = "<group>"; };
+		4981336E2234FE9200A80B0B /* local.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = local.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 		4981336A2234BFBE00A80B0B /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				4981336E2234FE9200A80B0B /* local.jpg */,
 				4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */,
 				4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */,
 			);
@@ -251,6 +254,11 @@
 				TargetAttributes = {
 					2606683A22320A750067004C = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2606685222320A790067004C = {
 						CreatedOnToolsVersion = 10.1;
@@ -285,6 +293,7 @@
 				2606684B22320A790067004C /* LaunchScreen.storyboard in Resources */,
 				2606684822320A790067004C /* Assets.xcassets in Resources */,
 				2606684622320A750067004C /* Main.storyboard in Resources */,
+				4981336F2234FE9200A80B0B /* local.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

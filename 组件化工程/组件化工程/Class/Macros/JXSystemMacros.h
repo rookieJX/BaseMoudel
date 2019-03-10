@@ -10,6 +10,7 @@
 #define JXSystemMacros_h
 
 #import <AdSupport/AdSupport.h>
+#import "AppDelegate.h"
 
 /**
  判断当前系统
@@ -41,5 +42,13 @@
  @return 当前版本号
  */
 #define JX_System_App_Version [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+
+
+/**
+ 获取当前Delegate
+
+ @return 当前代理
+ */
+#define JX_System_Delegate ((AppDelegate*)[UIApplication sharedApplication].delegate)
 
 #endif /* JXSystemMacros_h */

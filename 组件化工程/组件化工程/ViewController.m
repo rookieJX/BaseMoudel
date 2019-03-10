@@ -13,6 +13,8 @@
 #import "JXMacrosHeader.h"
 #import "JXDeviceHelper.h"
 #import "JXHelperHeader.h"
+#import "AppDelegate.h"
+#import "AppDelegate+JX_Category_Notification.h"
 
 #import <Photos/Photos.h>
 
@@ -36,6 +38,7 @@
     [self createButtonTitle:@"请求相机权限" action:@selector(actionForCameraAuth) originY:KbuttonHeight*2];
     [self createButtonTitle:@"请求相册权限" action:@selector(actionForPhotoAlbumAuth) originY:KbuttonHeight*3];
     [self createButtonTitle:@"请求远程通知权限" action:@selector(actionForRmoteNotificationAuth) originY:KbuttonHeight*4];
+    [self createButtonTitle:@"请求本地通知权限" action:@selector(actionForLocationNotificationAuth) originY:KbuttonHeight*5];
     NSLog(@"判断推送权限：%d",JX_Device_Permission_Macros_NotificationAuth);
     
 }
@@ -88,6 +91,11 @@
     [JX_Device JX_Device_Permission_Check_NotificationAuth:^(BOOL permission) {
         NSLog(@"权限判断提醒：%d",permission);
     }];
+}
+
+#pragma mark - 本地通知
+- (void)actionForLocationNotificationAuth {
+    [JX_System_Delegate JX_Category_Notification_Regist_Local];
 }
 
 

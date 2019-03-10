@@ -30,6 +30,10 @@
 	<string>允许**访问您的相册,来用于**功能</string>
 	<key>Photo Library Additions Usage Description</key>
 	<string></string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
