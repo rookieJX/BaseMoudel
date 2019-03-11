@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.view.backgroundColor   = JX_Color_Rand;
+    self.view.backgroundColor   = JX_Color_RGB(255, 255, 255);
     
     
     
@@ -40,7 +40,9 @@
     [self createButtonTitle:@"请求远程通知权限" action:@selector(actionForRmoteNotificationAuth) originY:KbuttonHeight*4];
     [self createButtonTitle:@"请求本地通知权限" action:@selector(actionForLocationNotificationAuth) originY:KbuttonHeight*5];
     NSLog(@"判断推送权限：%d",JX_Device_Permission_Macros_NotificationAuth);
-    
+    NSLog(@"判断定位权限：%d",JX_Device_Permission_Macros_LocationAuth);
+    [self createButtonTitle:@"请求使用中定位权限" action:@selector(actionForLocationInUseAuth) originY:KbuttonHeight*6];
+    [self createButtonTitle:@"请求后台定位权限" action:@selector(actionForLocationAlwaysAuth) originY:KbuttonHeight*7];
 }
 
 - (UIButton *)createButtonTitle:(NSString *)title action:(SEL)action originY:(CGFloat)originY {
@@ -98,6 +100,23 @@
     [JX_System_Delegate JX_Category_Notification_Regist_Local];
 }
 
+#pragma mark - 定位中权限
+- (void)actionForLocationInUseAuth {
+    if (JX_Device_Permission_Macros_LocationAuth) {
+        [JX_Device JX_Device_Permission_Check_LocationAuth_InUse:^(BOOL permission) {
+            NSLog(@"请求使用中定位权限:%d",permission);
+        }];
+    }
+}
+
+#pragma mark - 后台定位权限
+- (void)actionForLocationAlwaysAuth {
+    if (JX_Device_Permission_Macros_LocationAuth) {
+        [JX_Device JX_Device_Permission_Check_LocationAuth_Always:^(BOOL permission) {
+            NSLog(@"请求后台定位权限:%d",permission);
+        }];
+    }
+}
 
 #pragma mark - UIImagePickerControllerDelegate,UINavigationBarDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *)info {

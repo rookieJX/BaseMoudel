@@ -6,9 +6,25 @@
 //  Copyright © 2019 JX.Wang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "JXSingletonHelper.h"
-#import <UIKit/UIKit.h>
+
+@import UserNotifications;
+@import Foundation;
+@import UIKit;
+@import AssetsLibrary;
+@import Photos;
+@import AddressBook;
+@import Contacts;
+@import AVFoundation;
+@import CoreBluetooth;
+@import CoreLocation;
+@import EventKit;
+@import Speech;
+@import HealthKit;
+@import HomeKit;
+@import StoreKit;
+@import CoreMotion;
+@import CoreTelephony;
 
 
 /**
@@ -31,11 +47,16 @@ typedef void(^CheckPermissionPhotoLibraryAuth)  (BOOL permission);
  */
 typedef void(^CheckPermissionNotificationAuth)  (BOOL permission);
 /**
- 定位权限开关,会弹出是否允许弹出权限
- (需要在info中配置)Privacy - Location When In Use Usage Description 允许**在应用使用期间访问您的位置,来用于**功能
- (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**访问您的位置,来用于**功能
+ 定位权限开关(一直定位),会弹出是否允许弹出权限
+ (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**后台访问您的位置,来用于**功能
  */
-typedef void(^CheckPermissionLocationAuth)      (BOOL permission);
+typedef void(^CheckPermissionAlwaysLocationAuth)      (BOOL permission);
+
+/**
+ 定位权限开关(使用期间定位),会弹出是否允许弹出权限
+ (需要在info中配置)Privacy - Location When In Use Usage Description 允许**在应用使用期间访问您的位置,来用于**功能
+ */
+typedef void(^CheckPermissionInUseLocationAuth)       (BOOL permission);
 /**
  通讯录权限开关,会弹出是否允许弹出权限
  (需要在info中配置)Privacy - Contacts Usage Description 允许**访问您的通讯录,来用于**功能
@@ -205,10 +226,15 @@ singleton_interface(JXDeviceHelper);
 
 /**
  定位权限开关
- (需要在info中配置)Privacy - Location When In Use Usage Description 允许**在应用使用期间访问您的位置,来用于**功能
- (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**访问您的位置,来用于**功能
+ (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**后台访问您的位置,来用于**功能
  */
-- (void)JX_Device_Permission_Check_LocationAuth:(CheckPermissionLocationAuth)permission;
+- (void)JX_Device_Permission_Check_LocationAuth_Always:(CheckPermissionAlwaysLocationAuth)permission;
+
+/**
+ 定位权限开关
+ (需要在info中配置)Privacy - Location When In Use Usage Description 允许**访问您的位置,来用于**功能
+ */
+- (void)JX_Device_Permission_Check_LocationAuth_InUse:(CheckPermissionInUseLocationAuth)permission;
 /**
  通讯录权限开关
  (需要在info中配置)Privacy - Contacts Usage Description 允许**访问您的通讯录,来用于**功能

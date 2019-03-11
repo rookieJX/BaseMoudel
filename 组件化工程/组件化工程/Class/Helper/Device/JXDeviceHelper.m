@@ -10,27 +10,21 @@
 #import "JXMacrosHeader.h"
 #import "JXNullMacros.h"
 #import "JXSystemMacros.h"
-#import <AVFoundation/AVFoundation.h>
-#import <Photos/Photos.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <UserNotifications/UserNotifications.h>
-@import CoreTelephony;
-#import <CoreLocation/CoreLocation.h>
-#import <AddressBook/AddressBook.h>
-#import <Contacts/Contacts.h>
-#import <EventKit/EventKit.h>
 
+#import  <CoreLocation/CoreLocation.h>
 
-@interface JXDeviceHelper ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface JXDeviceHelper ()<CLLocationManagerDelegate>
 
 /**
- 跳转到相册
+ 定位回调
  */
-@property (nonatomic, strong) UIImagePickerController *imagePickerController;
+@property (nonatomic,copy) void (^JX_Device_Location)(CLAuthorizationStatus state);
+@property (nonatomic, strong) CLLocationManager         *locationManager;       // 定位
 
 @end
 
 @implementation JXDeviceHelper
+
 singleton_implementation(JXDeviceHelper);
 
 /**
@@ -249,12 +243,12 @@ singleton_implementation(JXDeviceHelper);
  @return YES:有权限，NO:没权限
  */
 - (BOOL)JX_Device_Permission_LocationAuth {
-    BOOL isLocation = [CLLocationManager locationServicesEnabled];
-    if (!isLocation) {
-        CLAuthorizationStatus CLstatus = [CLLocationManager authorizationStatus];
-        if (CLstatus == kCLAuthorizationStatusDenied || CLstatus == kCLAuthorizationStatusDenied) {
-            return NO;
-        }
+    if (![CLLocationManager locationServicesEnabled]) {
+        return NO;
+    }
+    CLAuthorizationStatus CLstatus = [CLLocationManager authorizationStatus];
+    if (CLstatus == kCLAuthorizationStatusDenied || CLstatus == kCLAuthorizationStatusRestricted) {
+        return NO;
     }
     return YES;
 }
@@ -330,17 +324,10 @@ singleton_implementation(JXDeviceHelper);
  (需要在info中配置)Privacy - Camera Usage Description 允许**访问您的相机,来用于**功能
  */
 - (void)JX_Device_Permission_Check_CameraAuth:(CheckPermissionCameraAuth)permission {
-    BOOL auth = [self JX_Device_CameraAvailable];
-    if (!auth) permission(NO);
     NSString *mediaType = AVMediaTypeVideo;//读取媒体类型
     [AVCaptureDevice requestAccessForMediaType:mediaType completionHandler:^(BOOL granted) {
         dispatch_async(dispatch_get_main_queue(),^{
             permission(granted);
-            if (granted) {
-                
-            } else {
-                
-            }
         });
     }];
 }
@@ -349,9 +336,6 @@ singleton_implementation(JXDeviceHelper);
  (需要在info中配置)Privacy - Photo Library Additions Usage Description 允许**访问您的相册,来用于**功能
  */
 - (void)JX_Device_Permission_Check_PhotoLibraryAuth:(CheckPermissionPhotoLibraryAuth)permission {
-    
-    BOOL auth = [self JX_Device_PhotoListAvailable];
-    if (!auth) permission(NO);
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) { //弹出访问权限提示框
         if (status == PHAuthorizationStatusAuthorized) {
             dispatch_async(dispatch_get_main_queue(),^{
@@ -376,12 +360,12 @@ singleton_implementation(JXDeviceHelper);
                 permission(granted);
             });
         }];
-    } else if (JX_System_Version >= 8.0) {
+    } else if (JX_System_Version >= 8.0) { // 这部分的推送权限回调需要在Appdelegate回调处理
         UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
         BOOL auth = [self JX_Device_Permission_NotificationAuth];
         permission(auth);
-    } else {
+    } else { // 这部分的推送权限回调需要在Appdelegate回调处理
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound];
         BOOL auth = [self JX_Device_Permission_NotificationAuth];
         permission(auth);
@@ -389,17 +373,36 @@ singleton_implementation(JXDeviceHelper);
 }
 /**
  定位权限开关
- (需要在info中配置)Privacy - Location When In Use Usage Description 允许**在应用使用期间访问您的位置,来用于**功能
  (需要在info中配置)Privacy - Location Always and When In Use Usage Description 允许**访问您的位置,来用于**功能
  */
-- (void)JX_Device_Permission_Check_LocationAuth:(CheckPermissionLocationAuth)permission {
-    BOOL auth = NO;
-    if ([CLLocationManager locationServicesEnabled] && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized)) {
-        auth = YES;
-    }else if ([CLLocationManager authorizationStatus] ==kCLAuthorizationStatusDenied) {
-        auth = NO;
-    }
-    permission(auth);
+- (void)JX_Device_Permission_Check_LocationAuth_Always:(CheckPermissionAlwaysLocationAuth)permission {
+    self.locationManager = [[CLLocationManager alloc] init];
+    [self.locationManager requestAlwaysAuthorization];
+    __weak typeof(self) weakSelf = self;
+    self.locationManager.delegate    = self;
+    [self setJX_Device_Location:^(CLAuthorizationStatus state) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BOOL auth = [weakSelf JX_Device_Permission_LocationAuth];
+            permission(auth);
+        });
+    }];
+}
+
+/**
+ 定位权限开关
+ (需要在info中配置)Privacy - Location When In Use Usage Description 允许**访问您的位置,来用于**功能
+ */
+- (void)JX_Device_Permission_Check_LocationAuth_InUse:(CheckPermissionInUseLocationAuth)permission {
+    self.locationManager = [[CLLocationManager alloc] init];
+    [self.locationManager requestWhenInUseAuthorization];
+    __weak typeof(self) weakSelf = self;
+    self.locationManager.delegate    = self;
+    [self setJX_Device_Location:^(CLAuthorizationStatus state) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BOOL auth = [weakSelf JX_Device_Permission_LocationAuth];
+            permission(auth);
+        });
+    }];
 }
 /**
  通讯录权限开关
@@ -416,5 +419,13 @@ singleton_implementation(JXDeviceHelper);
  (需要在info中配置)Privacy - Reminders Usage Description 允许**访问您的备忘录,来用于**功能
  */
 - (void)JX_Device_Permission_Check_ReminderAuth:(CheckPermissionReminderAuth)permission {}
+
+#pragma mark - 定位回调(CLLocationManagerDelegate)
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status{
+    if (status == kCLAuthorizationStatusNotDetermined) return;
+    if (self.JX_Device_Location) {
+        self.JX_Device_Location(status);
+    }
+}
 
 @end
