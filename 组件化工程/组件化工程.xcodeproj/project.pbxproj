@@ -16,6 +16,7 @@
 		2606685822320A790067004C /* _____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606685722320A790067004C /* _____Tests.m */; };
 		2606686F223213580067004C /* JXNullHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606686E223213580067004C /* JXNullHelper.m */; };
 		2606687B2232388E0067004C /* JXDeviceHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2606687A2232388E0067004C /* JXDeviceHelper.m */; };
+		2652DEB6223F4B830065D2BD /* UIView+JX_Category_View.m in Sources */ = {isa = PBXBuildFile; fileRef = 2652DEB5223F4B830065D2BD /* UIView+JX_Category_View.m */; };
 		4981336D2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */; };
 		4981336F2234FE9200A80B0B /* local.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4981336E2234FE9200A80B0B /* local.jpg */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,8 @@
 		260668792232388E0067004C /* JXDeviceHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXDeviceHelper.h; sourceTree = "<group>"; };
 		2606687A2232388E0067004C /* JXDeviceHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JXDeviceHelper.m; sourceTree = "<group>"; };
 		2606687C2232425F0067004C /* JXDeviceMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JXDeviceMacros.h; sourceTree = "<group>"; };
+		2652DEB4223F4B830065D2BD /* UIView+JX_Category_View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+JX_Category_View.h"; sourceTree = "<group>"; };
+		2652DEB5223F4B830065D2BD /* UIView+JX_Category_View.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+JX_Category_View.m"; sourceTree = "<group>"; };
 		4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+JX_Category_Notification.h"; sourceTree = "<group>"; };
 		4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+JX_Category_Notification.m"; sourceTree = "<group>"; };
 		4981336E2234FE9200A80B0B /* local.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = local.jpg; sourceTree = "<group>"; };
@@ -109,7 +112,6 @@
 				2606684222320A750067004C /* ViewController.m */,
 				2606684422320A750067004C /* Main.storyboard */,
 				2606684722320A790067004C /* Assets.xcassets */,
-				49097E7F223400B000BB9788 /* New Group */,
 				2606684922320A790067004C /* LaunchScreen.storyboard */,
 				2606684C22320A790067004C /* Info.plist */,
 				2606684D22320A790067004C /* main.m */,
@@ -188,19 +190,14 @@
 			path = Device;
 			sourceTree = "<group>";
 		};
-		49097E7F223400B000BB9788 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		4981336A2234BFBE00A80B0B /* Category */ = {
 			isa = PBXGroup;
 			children = (
 				4981336E2234FE9200A80B0B /* local.jpg */,
 				4981336B2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.h */,
 				4981336C2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m */,
+				2652DEB4223F4B830065D2BD /* UIView+JX_Category_View.h */,
+				2652DEB5223F4B830065D2BD /* UIView+JX_Category_View.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -312,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2606684322320A750067004C /* ViewController.m in Sources */,
+				2652DEB6223F4B830065D2BD /* UIView+JX_Category_View.m in Sources */,
 				4981336D2234BFDC00A80B0B /* AppDelegate+JX_Category_Notification.m in Sources */,
 				2606684E22320A790067004C /* main.m in Sources */,
 				2606686F223213580067004C /* JXNullHelper.m in Sources */,
