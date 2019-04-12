@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "AppDelegate+JX_Category_Notification.h"
+//#import "AppDelegate+JX_Category_Notification.h"
 
 @interface AppDelegate ()
 

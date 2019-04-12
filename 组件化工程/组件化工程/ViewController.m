@@ -7,14 +7,14 @@
 //
 
 #import "ViewController.h"
-#import "JXFontMacros.h"
-#import "JXLayoutMacros.h"
+
 #import "JXNullHelper.h"
 #import "JXMacrosHeader.h"
 #import "JXDeviceHelper.h"
 #import "JXHelperHeader.h"
 #import "AppDelegate.h"
 #import "AppDelegate+JX_Category_Notification.h"
+#import "CALayer+JX_Category_Animation.h"
 
 #import <Photos/Photos.h>
 
@@ -23,6 +23,8 @@
 @interface ViewController ()<UIImagePickerControllerDelegate,UINavigationBarDelegate>
 @property (nonatomic,strong) UIImagePickerController *imagePickerController;
 @property (nonatomic,strong) UIImageView *imageView;
+/** 摇动 */
+@property (nonatomic,strong) UIButton * shackButton;
 @end
 
 @implementation ViewController
@@ -31,8 +33,6 @@
     [super viewDidLoad];
 
     self.view.backgroundColor   = JX_Color_RGB(255, 255, 255);
-    
-    
     
     [self createButtonTitle:@"请求麦克风权限" action:@selector(actionForAudioAuth) originY:KbuttonHeight];
     [self createButtonTitle:@"请求相机权限" action:@selector(actionForCameraAuth) originY:KbuttonHeight*2];
@@ -43,6 +43,8 @@
     NSLog(@"判断定位权限：%d",JX_Device_Permission_Macros_LocationAuth);
     [self createButtonTitle:@"请求使用中定位权限" action:@selector(actionForLocationInUseAuth) originY:KbuttonHeight*6];
     [self createButtonTitle:@"请求后台定位权限" action:@selector(actionForLocationAlwaysAuth) originY:KbuttonHeight*7];
+    
+    self.shackButton = [self createButtonTitle:@"摇动" action:@selector(actionForShack) originY:KbuttonHeight*8];
 }
 
 - (UIButton *)createButtonTitle:(NSString *)title action:(SEL)action originY:(CGFloat)originY {
@@ -116,6 +118,11 @@
             NSLog(@"请求后台定位权限:%d",permission);
         }];
     }
+}
+
+#pragma mark - 摇动
+- (void)actionForShack {
+    [self.shackButton.layer shake];
 }
 
 #pragma mark - UIImagePickerControllerDelegate,UINavigationBarDelegate

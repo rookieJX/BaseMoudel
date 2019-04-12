@@ -109,7 +109,7 @@
                     content.body = @"*****";
                     
                     // app显示通知数量的角标
-                    content.badge = @(1);
+                    content.badge = @(11);
                     
                     // 通知的提示声音，这里用的默认的声音
                     content.sound = [UNNotificationSound defaultSound];
@@ -152,7 +152,7 @@
                     
                     // 通知内容
                     notification.alertBody =  @"****";
-                    notification.applicationIconBadgeNumber = 1;
+                    notification.applicationIconBadgeNumber = 21;
                     // 通知被触发时播放的声音
                     notification.soundName = UILocalNotificationDefaultSoundName;
                     // 通知参数
